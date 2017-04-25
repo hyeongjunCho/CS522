@@ -34,6 +34,49 @@ class FA:
             self.e_closures.append(states)
 
 
+    def e_NFA_travle(self, L):
+        current_states = [self.initial]
+        next_states = []
+        flag = 0
+
+        i = 0
+        while i < len(current_states):
+            state = current_states[i]
+            e_closure = self.e_closures[self.states.index(state)]
+            for s in e_closure:
+                if current_states.count(s) == 0:
+                    current_states.append(s)
+            i+=1
+        current_states.sort(key=lambda x: int(x))
+        while len(L)>0:
+            next_states = []
+            flag = 0
+            for current_state in current_states:
+                states = self.rule_total[self.states.index(current_state)][self.inputs.index(L[0])]
+                if states != 'None':
+                    flag = 1
+                    for s in states:
+                        if next_states.count(s) == 0:
+                            next_states.append(s)
+            if flag == 0:
+                print("아니오")
+                return
+            L = L[1:]
+
+            current_states = []
+            for state in next_states:
+                e_closure = self.e_closures[self.states.index(state)]
+                for s in e_closure:
+                    if current_states.count(s) == 0:
+                        current_states.append(s)
+            current_states.sort(key=lambda x: int(x))
+        for current_state in current_states:
+            if len(L) == 0 and self.accepts.count(current_state) == 1:
+                print("네")
+                return
+        print("아니오")
+
+
     def to_DFA(self):
         dfa = FA()
         dfa.inputs = self.inputs[:]
@@ -66,22 +109,14 @@ class FA:
                     dfa.states_dict[next_state] = states[:]
                     dfa.states.append(next_state)
 
-                    if dfa.rule.count([dfa.states[i], input, next_state]) == 0:
-                        dfa.rule.append([dfa.states[i], input, next_state])
-                        for s in dfa.states_dict[next_state]:
-                            if self.accepts.count(s) == 1 and dfa.accepts.count(next_state) == 0:
-                                dfa.accepts.append(next_state)
+                if dfa.rule.count([dfa.states[i], input, next_state]) == 0:
+                    dfa.rule.append([dfa.states[i], input, next_state])
+                    for s in dfa.states_dict[next_state]:
+                        if self.accepts.count(s) == 1 and dfa.accepts.count(next_state) == 0:
+                            dfa.accepts.append(next_state)
+                            break
             i += 1
             print("i",i,"len",len(dfa.states_dict))
-            '''
-            i += 1
-            if i == len(dfa.states):
-                if count == len(dfa.states) * len(dfa.inputs):
-                    break
-                else:
-                    i = 0
-                    count = 0
-            '''
         dfa.make_rule_total()
         for i in dfa.rule_total:
             for j in i:
@@ -96,7 +131,6 @@ class FA:
 
     def to_m_DFA(self):
         if not self.is_DFA:
-            print(1)
             return (self.to_DFA()).to_m_DFA()
         mdfa = FA()
         mdfa.inputs = self.inputs[:]
@@ -107,9 +141,9 @@ class FA:
         while True:
             l = len(equivalent) # checks for changes of the equivalent
             flag = 0
-            print("l", l, "len", len(equivalent))
-            print("equivalent", equivalent)
-            for input in mdfa.inputs:
+            #print("l", l, "len", len(equivalent))
+            #print("equivalent", equivalent)
+            for input in self.inputs:
                 for states in equivalent:
                     temp_states = []
                     for i in range(len(equivalent)):
@@ -118,12 +152,12 @@ class FA:
                         temp = self.rule_total[self.states.index(state)][self.inputs.index(input)]
                         if temp != "None":
                             temp = temp[0]
-                        print("temp", temp)
+                            #print("temp", temp)
                         for i in range(len(equivalent)):
                             if equivalent[i].count(temp) == 1:
                                 temp_states[i].append(state)
                     next_states = []
-                    print("temp_states", temp_states)
+                    #print("temp_states", temp_states)
                     for s in temp_states:
                         if len(s) > 1:
                             next_states.append(s[1:])
@@ -141,10 +175,6 @@ class FA:
             if flag == 1:
                 equivalent.remove(states)
                 equivalent.extend(next_states)
-                for i in next_states:
-                    states = list(set(states) - set(i))
-                print("deleted states", states)
-                equivalent.append(states)
                 continue
             
             if l == len(equivalent):

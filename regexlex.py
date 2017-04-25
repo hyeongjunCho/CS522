@@ -44,7 +44,7 @@ lexer = lex.lex()
 data = '''
 ((r+R+s+e+E+f+a+q+Q+t+T+d+w+W+c+z+x+v+g).(k+o+i+O+j+p+u+P+h+h.k+h.o+h.l+y+n+n.j+n.p+n.l+b+m+m.l+l).(_+r+R+r.t+s+s.w+s.g+e+f+f.r+f.a+f.q+f.t+f.x+f.v+f.g+a+q+q.t+t+T+d+w+c+z+x+v+g))*
 '''
-#((1+2+2.a+4+5+5.a+7+8+7.a+7.a.a+1.a+2.a.a+5.a.a+8.a+1.b+2.a.b+5.a.b+7.b+7.a.b)(3+3.9+3.a+3.a.9+3.3+3.3.9+3.3.a+3.3.a.9+6+6.3+6.3.9+6.9+6.a+6.6+6.6.3+6.6.3.9+6.6.9+6.6.a+0+0.9+9)(_+1+1.7+2+2.7.a+2.8.a+2.a+4+4.1+4.5+4.5.a+4.7+4.2.a.a+4.5.a.a+4.8.a+5+5.a+5.a.7+7+8+7.a+7.a.a+1.a+2.a.a+5.a.a+8.a+1.b+7.b))*
+#((1+2+2.a+4+5+5.a+7+8+7.a+7.a.a+1.a+2.a.a+5.a.a+8.a+1.b+2.a.b+5.a.b+7.b+7.a.b).(3+3.9+3.a+3.a.9+3.3+3.3.9+3.3.a+3.3.a.9+6+6.3+6.3.9+6.9+6.a+6.6+6.6.3+6.6.3.9+6.6.9+6.6.a+0+0.9+9).(_+1+1.7+2+2.7.a+2.8.a+2.a+4+4.1+4.5+4.5.a+4.7+4.2.a.a+4.5.a.a+4.8.a+5+5.a+5.a.7+7+8+7.a+7.a.a+1.a+2.a.a+5.a.a+8.a+1.b+7.b))*
 #(0+(1.((0.1)*.(0.0)*.0)*.1)*)*+_
 lexer.input(data)
 
@@ -213,6 +213,7 @@ def tree2nfa(root):
 
     make_nfa(root)
     print(nfa.states)
+    print(len(nfa.states))
     nfa.make_rule_total()
     nfa.make_e_closure()
     nfa.accepts.append(nfa.rule[-1][2])
@@ -222,7 +223,14 @@ def tree2nfa(root):
 
 
 nfa = tree2nfa(root)
-print(nfa.accepts)
+'''
 dfa = nfa.to_DFA()
+dfa.make_e_closure()
 mdfa = dfa.to_m_DFA()
-print(mdfa)
+while True:
+    print("input your string, q")
+    L = input()
+    if L == "q":
+        break
+    else:
+        dfa.e_NFA_travle(L)'''
