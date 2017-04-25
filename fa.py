@@ -232,16 +232,17 @@ class FA:
                 self.jongsung = self.jongsung + self.daeum
                 self.daeum = input_string
             elif input_string in self.jungset:
+                print("jong", self.chosung, self.jungsung, self.jongsung, self.daeum)
                 temp = self.daeum
-                self.daeum = "" 
+                self.daeum = ""
                 self.completed = self.completed + str(self.make_hangul())
                 self.chosung = temp
                 self.jungsung = input_string
                 self.jongsung = ""
-                self.daeum = ""
         elif self.daeum:
+            print("dauem", self.chosung, self.jungsung, self.jongsung, self.daeum)
             if self.daeum in self.jongset and input_string in self.choset:
-                self.jongsung = self.jongsung + self.daeum
+                self.jongsung = self.daeum
                 self.daeum = input_string
             elif input_string in self.jungset:
                 temp = self.daeum
@@ -291,6 +292,7 @@ class FA:
             key = win.getch()
             if key != -1:
                 clear()
+                print("current_state", current_state)
                 if chr(key) == "!":
                     self.chosung = ""
                     self.jungsung = ""
@@ -364,15 +366,12 @@ class FA:
         
     def make_hangul(self):
         if self.jongsung:
-            if self.jongsung + self.daeum in self.jongset:
-                return chr(self.choset.index(self.chosung) * 588 + self.jungset.index(self.jungsung) * 28 + self.jongset.index(self.jongsung + self.daeum) + 44032)
+            if self.daeum:
+                return str(chr(self.choset.index(self.chosung) * 588 + self.jungset.index(self.jungsung) * 28 + self.jongset.index(self.jongsung) + 44032)) + str(chr(self.choset.index(self.daeum) + 0x1100))
             else:
-                return chr(self.choset.index(self.chosung) * 588 + self.jungset.index(self.jungsung) * 28 + self.jongset.index(self.jongsung) + 44032) + chr(self.choset.index(self.daeum) + 0x1100)
+                return str(chr(self.choset.index(self.chosung) * 588 + self.jungset.index(self.jungsung) * 28 + self.jongset.index(self.jongsung) + 44032))
         elif self.daeum:
-            if self.daeum in self.jongset:
-                return chr(self.choset.index(self.chosung) * 588 + self.jungset.index(self.jungsung) * 28 + self.jongset.index(self.daeum) + 44032)
-            else:
-                return chr(self.choset.index(self.chosung) * 588 + self.jungset.index(self.jungsung) * 28 + 44032) + chr(self.choset.index(self.daeum) + 0x1100)
+            return str(chr(self.choset.index(self.chosung) * 588 + self.jungset.index(self.jungsung) * 28 + 44032)) + str(chr(self.choset.index(self.daeum) + 0x1100))
         elif self.jungsung:
             return chr(self.choset.index(self.chosung) * 588 + self.jungset.index(self.jungsung) * 28 + 44032)
         elif self.chosung:
