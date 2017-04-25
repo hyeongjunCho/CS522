@@ -108,7 +108,6 @@ while True:
     tok = lexer.token()
     if not tok:
         break
-    print(tok)
     stack.read(tok)
 
 stack.clear_symbol_stack()
@@ -212,25 +211,31 @@ def tree2nfa(root):
 
 
     make_nfa(root)
-    print(nfa.states)
-    print(len(nfa.states))
     nfa.make_rule_total()
     nfa.make_e_closure()
     nfa.accepts.append(nfa.rule[-1][2])
-    print(len(nfa.states), len(nfa.rule), len(nfa.inputs))
 
     return nfa
 
+# ---------------------------------------------
+# nfa to mdfa
+# ---------------------------------------------
 
 nfa = tree2nfa(root)
-'''
 dfa = nfa.to_DFA()
-dfa.make_e_closure()
 mdfa = dfa.to_m_DFA()
+
+mdfa.hangulmoa()
+'''
+L = "r"
+print(mdfa.rule_total[mdfa.states.index(mdfa.initial)][mdfa.inputs.index(L)])
+mdfa.DFA_travle(L)
+
 while True:
     print("input your string, q")
     L = input()
     if L == "q":
         break
     else:
-        dfa.e_NFA_travle(L)'''
+        mdfa.DFA_travle(L)'''
+        
