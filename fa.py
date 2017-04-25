@@ -232,7 +232,6 @@ class FA:
                 self.jongsung = self.jongsung + self.daeum
                 self.daeum = input_string
             elif input_string in self.jungset:
-                print("jong", self.chosung, self.jungsung, self.jongsung, self.daeum)
                 temp = self.daeum
                 self.daeum = ""
                 self.completed = self.completed + str(self.make_hangul())
@@ -240,7 +239,6 @@ class FA:
                 self.jungsung = input_string
                 self.jongsung = ""
         elif self.daeum:
-            print("dauem", self.chosung, self.jungsung, self.jongsung, self.daeum)
             if self.daeum in self.jongset and input_string in self.choset:
                 self.jongsung = self.daeum
                 self.daeum = input_string
@@ -292,7 +290,6 @@ class FA:
             key = win.getch()
             if key != -1:
                 clear()
-                print("current_state", current_state)
                 if chr(key) == "!":
                     self.chosung = ""
                     self.jungsung = ""
