@@ -112,8 +112,8 @@ while True:
 
 stack.clear_symbol_stack()
 
-print("symbol_stack ", stack.symbol_stack)
-print("postfix_stack ", stack.postfix_stack)
+#print("symbol_stack ", stack.symbol_stack)
+#print("postfix_stack ", stack.postfix_stack)
 
 postfix = []
 postfix[:] = stack.postfix_stack[:]

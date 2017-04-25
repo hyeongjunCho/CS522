@@ -1,3 +1,4 @@
+
 import curses
 import os
 import time
@@ -227,7 +228,6 @@ class FA:
 
     def chosung_wooseon(self, input_string):
         if self.jongsung:
-            print("case jong")
             if self.jongsung + self.daeum in self.jongset and input_string in self.choset:
                 self.jongsung = self.jongsung + self.daeum
                 self.daeum = input_string
@@ -240,7 +240,6 @@ class FA:
                 self.jongsung = ""
                 self.daeum = ""
         elif self.daeum:
-            print("case daeum")
             if self.daeum in self.jongset and input_string in self.choset:
                 self.jongsung = self.jongsung + self.daeum
                 self.daeum = input_string
@@ -253,21 +252,17 @@ class FA:
                 self.jongsung = ""
                 pass
         elif self.jungsung:
-            print("case jung")
             if input_string in self.choset:
                 self.daeum = input_string
             elif self.jungsung + input_string in self.jungset:
                 self.jungsung = self.jungsung + input_string
         elif self.chosung:
-            print("case cho")
             if input_string in self.jungset:
                 self.jungsung = input_string
             elif self.chosung + input_string in self.choset:
                 self.chosung = self.chosung + input_string
         else:
-            print("else")
             if input_string in self.choset:
-                print("if")
                 self.chosung = input_string
 
         
@@ -296,7 +291,6 @@ class FA:
             key = win.getch()
             if key != -1:
                 clear()
-                print("cho", self.chosung, "jung", self.jungsung, "jong", self.jongsung, "daeum", self.daeum)
                 if chr(key) == "!":
                     self.chosung = ""
                     self.jungsung = ""
@@ -336,9 +330,6 @@ class FA:
                             current_state = self.initial
                         self.hangulprint()
                     elif chr(key) in self.inputs:
-                        print(1)
-                        print(self.rule_total[self.states.index(current_state)][self.inputs.index(chr(key))])
-                        print("cho", self.chosung, "jung", self.jungsung, "jong", self.jongsung, "daeum", self.daeum)
                         if self.rule_total[self.states.index(current_state)][self.inputs.index(chr(key))][0] == "q1":
                             if self.completed:
                                 self.completed = self.completed + str(self.make_hangul())
@@ -352,25 +343,19 @@ class FA:
                                 self.daeum = ""   
                                 self.chosung_wooseon(str(chr(key)))
                             elif chr(key) in self.jungset:
-                                print(2)
                                 self.chosung = ""
                                 self.jungsung = ""
                                 self.jongsung = ""
                                 self.daeum = ""   
                                 if self.completed:
-                                    print(self.jungset.index(chr(key)))
-                                    print(chr(self.jungset.index(chr(key))+ 0x1161))
-                                    self.completed = self.completed + chr(self.jungset.index(chr(key)) + 0x1161)
+                                    self.completed = self.completed + str(chr(self.jungset.index(chr(key)) + 0x1161))
                                 else:
-                                    self.completed = chr(self.jungset.index(chr(key)) + 0x1161)
-                                print("self.completed", self.completed, "key", chr(key))
+                                    self.completed = str(chr(self.jungset.index(chr(key)) + 0x314F))
                                 current_state = self.initial
                         else:
                             current_state = self.rule_total[self.states.index(current_state)][self.inputs.index(chr(key))][0]
                             self.chosung_wooseon(str(chr(key)))
                         self.hangulprint()
-                print("completed", self.completed)
-                print("cho", self.chosung, "jung", self.jungsung, "jong", self.jongsung, "daeum", self.daeum)
                         
 
 
@@ -405,15 +390,16 @@ class FA:
                 if self.rule_total[temp[0]][temp[1]][0] != "q1":
                     current_state = self.rule_total[temp[0]][temp[1]][0]
                     current_string = current_string[1:]
+                else:
+                    return None
+                    
 
         if len(current_string) == 0:
             return current_state
 
 
     def hangulprint(self):
-        #print(self.completed + str(self.make_hangul()))
-        #print(self.completed)
-        pass
+        print(self.completed + str(self.make_hangul()))
 
 
 
