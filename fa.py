@@ -227,6 +227,7 @@ class FA:
 
     def chosung_wooseon(self, input_string):
         if self.jongsung:
+            print("case jong")
             if self.jongsung + self.daeum in self.jongset and input_string in self.choset:
                 self.jongsung = self.jongsung + self.daeum
                 self.daeum = input_string
@@ -239,6 +240,7 @@ class FA:
                 self.jongsung = ""
                 self.daeum = ""
         elif self.daeum:
+            print("case daeum")
             if self.daeum in self.jongset and input_string in self.choset:
                 self.jongsung = self.jongsung + self.daeum
                 self.daeum = input_string
@@ -251,11 +253,13 @@ class FA:
                 self.jongsung = ""
                 pass
         elif self.jungsung:
-            if input_string in self.chosung:
+            print("case jung")
+            if input_string in self.choset:
                 self.daeum = input_string
             elif self.jungsung + input_string in self.jungset:
                 self.jungsung = self.jungsung + input_string
         elif self.chosung:
+            print("case cho")
             if input_string in self.jungset:
                 self.jungsung = input_string
             elif self.chosung + input_string in self.choset:
@@ -292,7 +296,7 @@ class FA:
             key = win.getch()
             if key != -1:
                 clear()
-                print(self.chosung, self.jungsung, self.jongsung, self.daeum)
+                print("cho", self.chosung, "jung", self.jungsung, "jong", self.jongsung, "daeum", self.daeum)
                 if chr(key) == "!":
                     self.chosung = ""
                     self.jungsung = ""
@@ -366,6 +370,7 @@ class FA:
                             self.chosung_wooseon(str(chr(key)))
                         self.hangulprint()
                 print("completed", self.completed)
+                print("cho", self.chosung, "jung", self.jungsung, "jong", self.jongsung, "daeum", self.daeum)
                         
 
 
